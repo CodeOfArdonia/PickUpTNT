@@ -26,10 +26,10 @@ public class BlockItemMixin {
         if (!Blocks.TNT.isEnabled(world.getEnabledFeatures())) return;
         BlockPos pos = context.getBlockPos().add(context.getSide().getVector());
         if (!world.getBlockState(pos).isReplaceable()) return;
-        stack.decrement(1);
         TntEntity tnt = new TntEntity(world, pos.getX(), pos.getY(), pos.getZ(), null);
         tnt.setFuse(stack.get(Constants.FUSE_TYPE));
         world.spawnEntity(tnt);
         cir.setReturnValue(ActionResult.SUCCESS);
+        stack.decrement(1);
     }
 }
