@@ -30,5 +30,6 @@ public class BlockItemMixin {
         tnt.setFuse(stack.get(Constants.FUSE_TYPE));
         world.spawnEntity(tnt);
         cir.setReturnValue(ActionResult.SUCCESS);
+        stack.decrement(1);
     }
 }
