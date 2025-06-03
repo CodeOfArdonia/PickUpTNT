@@ -19,9 +19,6 @@
     "pick_up_tnt.mixins.json"
   ],
   "depends": {
-    "fabricloader": "*",
-    "minecraft": "~1.20.1",
-    "java": "*",
-    "fabric-api": "*"
+    "minecraft": "1.20.x"
   }
 }
