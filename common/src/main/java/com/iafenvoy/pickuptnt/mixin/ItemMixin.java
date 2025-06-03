@@ -1,6 +1,8 @@
 package com.iafenvoy.pickuptnt.mixin;
 
 import com.iafenvoy.pickuptnt.Constants;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -63,14 +65,14 @@ public abstract class ItemMixin {
             cir.setReturnValue(TypedActionResult.success(stack));
         } else if (hand == Hand.MAIN_HAND) {
             ItemStack offhand = user.getOffHandStack();
-            if (!offhand.isOf(Items.FLINT_AND_STEEL)) return;
-            offhand.damage(1, user, entity -> {
+            if (offhand.isOf(Items.FLINT_AND_STEEL)) offhand.damage(1, user, entity -> {
             });
+            else if (!offhand.isIn(Constants.PRIME_TNT) && EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, offhand) == 0)
+                return;
             if (stack.getCount() == 1 || user.isSneaking())
                 stack.getOrCreateNbt().putInt(Constants.FUSE, Constants.DEFAULT_FUSE);
             else {
-                stack.decrement(1);
-                ItemStack newStack = new ItemStack(Items.TNT);
+                ItemStack newStack = stack.split(1);
                 newStack.getOrCreateNbt().putInt(Constants.FUSE, Constants.DEFAULT_FUSE);
                 user.giveItemStack(newStack);
             }
