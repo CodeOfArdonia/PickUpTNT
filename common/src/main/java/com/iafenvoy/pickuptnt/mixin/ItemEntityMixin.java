@@ -26,14 +26,14 @@ public abstract class ItemEntityMixin extends Entity {
     private void onItemEntityTick(CallbackInfo ci) {
         ItemStack stack = this.getStack();
         if (!stack.isOf(Items.TNT) || stack.isEmpty()) return;
-        if (stack.getNbt() != null && stack.getNbt().contains(Constants.FUSE)) {
-            int fuse = stack.getNbt().getInt(Constants.FUSE);
+        if (stack.contains(Constants.FUSE_TYPE)) {
+            int fuse = stack.get(Constants.FUSE_TYPE);
             if (fuse == 0) {
                 if (!this.getWorld().isClient)
                     this.getWorld().createExplosion(null, this.getX(), this.getBodyY(0.0625), this.getZ(), 4.0F * stack.getCount(), World.ExplosionSourceType.TNT);
                 this.discard();
                 ci.cancel();
-            } else stack.getNbt().putInt(Constants.FUSE, fuse - 1);
+            } else stack.set(Constants.FUSE_TYPE, fuse - 1);
         }
     }
 }

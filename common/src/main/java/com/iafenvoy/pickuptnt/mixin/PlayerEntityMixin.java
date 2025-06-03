@@ -22,7 +22,7 @@ public abstract class PlayerEntityMixin {
         if (!(target instanceof TntEntity tnt)) return;
         if (tnt.getFuse() >= 0) {
             ItemStack stack = new ItemStack(Items.TNT);
-            stack.getOrCreateNbt().putInt(Constants.FUSE, tnt.getFuse());
+            stack.set(Constants.FUSE_TYPE, tnt.getFuse());
             this.giveItemStack(stack);
             target.discard();
             ci.cancel();

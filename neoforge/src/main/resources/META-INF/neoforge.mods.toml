@@ -5,7 +5,7 @@ license = "All Right Reserved"
 
 [[mods]]
 modId = "pick_up_tnt"
-version = "${version}"
+version = "1.1"
 displayName = "PickUpTNT"
 authors = "IAFEnvoy"
 description = '''
@@ -23,7 +23,7 @@ side = "BOTH"
 [[dependencies.pick_up_tnt]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.20.2,1.20.5)"
+versionRange = "[1.20.5,1.21)"
 ordering = "NONE"
 side = "BOTH"
 

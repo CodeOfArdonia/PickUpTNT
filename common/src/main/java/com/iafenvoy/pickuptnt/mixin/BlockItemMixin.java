@@ -20,16 +20,16 @@ public class BlockItemMixin {
     @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
     private void onPlaceTnt(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
         ItemStack stack = context.getStack();
-        if (!stack.isOf(Items.TNT) || stack.isEmpty() || stack.getNbt() == null || !stack.getNbt().contains(Constants.FUSE))
+        if (!stack.isOf(Items.TNT) || stack.isEmpty() || !stack.contains(Constants.FUSE_TYPE))
             return;
         World world = context.getWorld();
         if (!Blocks.TNT.isEnabled(world.getEnabledFeatures())) return;
         BlockPos pos = context.getBlockPos().add(context.getSide().getVector());
         if (!world.getBlockState(pos).isReplaceable()) return;
-        stack.decrement(1);
         TntEntity tnt = new TntEntity(world, pos.getX(), pos.getY(), pos.getZ(), null);
-        tnt.setFuse(stack.getNbt().getInt(Constants.FUSE));
+        tnt.setFuse(stack.get(Constants.FUSE_TYPE));
         world.spawnEntity(tnt);
         cir.setReturnValue(ActionResult.SUCCESS);
+        stack.decrement(1);
     }
 }
