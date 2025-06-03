@@ -19,6 +19,6 @@
     "pick_up_tnt.mixins.json"
   ],
   "depends": {
-    "minecraft": "1.20.x"
+    "minecraft": "1.21.x"
   }
 }

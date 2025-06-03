@@ -2,7 +2,7 @@ package com.iafenvoy.pickuptnt.mixin;
 
 import com.iafenvoy.pickuptnt.Constants;
 import com.mojang.serialization.Codec;
-import net.minecraft.component.DataComponentType;
+import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.network.codec.PacketCodecs;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,7 +16,7 @@ import java.util.function.UnaryOperator;
 @Mixin(DataComponentTypes.class)
 public abstract class DataComponentTypesMixin {
     @Shadow
-    private static <T> DataComponentType<T> register(String id, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {
+    private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
         throw new AssertionError("This method should be replaced by mixin.");
     }
 
