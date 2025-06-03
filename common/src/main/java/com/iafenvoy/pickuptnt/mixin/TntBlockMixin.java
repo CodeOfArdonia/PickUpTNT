@@ -10,8 +10,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stat.Stats;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,14 +28,14 @@ public abstract class TntBlockMixin {
     private static void primeTnt(World world, BlockPos pos, @Nullable LivingEntity igniter) {
     }
 
-    @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
-    private void handleUseTnt(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
+    @Inject(method = "onUseWithItem", at = @At("HEAD"), cancellable = true)
+    private void handleUseTnt(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit, CallbackInfoReturnable<ItemActionResult> cir) {
         ItemStack itemStack = player.getStackInHand(hand);
         if (itemStack.isIn(Constants.PRIME_TNT) || EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, itemStack) > 0) {
             primeTnt(world, pos, player);
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
             player.incrementStat(Stats.USED.getOrCreateStat(itemStack.getItem()));
-            cir.setReturnValue(ActionResult.success(world.isClient));
+            cir.setReturnValue(ItemActionResult.success(world.isClient));
         }
     }
 }
