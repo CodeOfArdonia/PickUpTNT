@@ -1,6 +1,7 @@
 package com.iafenvoy.pickuptnt.mixin;
 
 import com.iafenvoy.pickuptnt.Constants;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
@@ -10,6 +11,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
@@ -24,6 +27,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Optional;
 
 @Mixin(Item.class)
 public abstract class ItemMixin {
@@ -65,8 +70,9 @@ public abstract class ItemMixin {
             cir.setReturnValue(TypedActionResult.success(stack));
         } else if (hand == Hand.MAIN_HAND) {
             ItemStack offhand = user.getOffHandStack();
+            Optional<RegistryEntry<Enchantment>> optional = Optional.ofNullable(world.getRegistryManager()).map(x -> x.get(RegistryKeys.ENCHANTMENT)).map(x -> x.getEntry(Enchantments.FIRE_ASPECT)).flatMap(x -> x);
             if (offhand.isOf(Items.FLINT_AND_STEEL)) offhand.damage(1, user, EquipmentSlot.OFFHAND);
-            else if (!offhand.isIn(Constants.PRIME_TNT) && EnchantmentHelper.getLevel(Enchantments.FIRE_ASPECT, offhand) == 0)
+            else if (!offhand.isIn(Constants.PRIME_TNT) && optional.isPresent() && EnchantmentHelper.getLevel(optional.get(), offhand) == 0)
                 return;
             if (stack.getCount() == 1 || user.isSneaking())
                 stack.set(Constants.FUSE_TYPE, Constants.DEFAULT_FUSE);
