@@ -12,7 +12,8 @@
     "EntityAccessor",
     "ItemEntityMixin",
     "ItemMixin",
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "TntBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1
